@@ -54,12 +54,12 @@ fun getTurnType(start: Direction, end: Direction): TurnType
     val startValue = mapDirection(start)
     val endValue = mapDirection(end)
 
-    val difference = endValue - startValue
+    val difference = endValue - startValue + 4
 
-    return when {
-        difference == 0 -> TurnType.TURN_AROUND
-        difference % 2 != 0 && difference < 0 -> TurnType.LEFT
-        difference % 2 != 0 && difference > 0 -> TurnType.RIGHT
+    return when (difference % 4) {
+        0 -> TurnType.TURN_AROUND
+        1 -> TurnType.LEFT
+        3 -> TurnType.RIGHT
         else -> TurnType.FORWARD
     }
 }

@@ -3,6 +3,7 @@ package com.example
 import com.example.traffic.commands.Command
 import com.example.traffic.commands.CommandProcessor
 import com.example.traffic.commands.Commands
+import com.example.traffic.commands.DebugModeController
 import com.example.traffic.simulation.IntersectionManager
 import com.example.traffic.utils.Direction
 import io.ktor.http.*
@@ -20,7 +21,12 @@ import io.ktor.server.request.*
 fun main() {
     val intersectionManager = IntersectionManager()
     val commandProcessor = CommandProcessor();
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0") {
+
+    embeddedServer(Netty, port = 8080, host = "0.0.0.0", watchPaths = listOf("classes")) {
+        if(DebugModeController.isDebugModeOn())
+        {
+            log.debug("================================ Debug mode ================================")
+        }
         install(ContentNegotiation) {
             json()
         }
@@ -28,7 +34,8 @@ fun main() {
             post("/commands") {
                 val commands = call.receive<Commands>()
                 // Process the commands in bulk and respond with the results
-                commandProcessor.runCommands(commands, call, intersectionManager)
+                val results = commandProcessor.runCommands(commands, call, intersectionManager)
+                call.respond(HttpStatusCode.OK, results)
             }
         }
     }.start(wait = true)

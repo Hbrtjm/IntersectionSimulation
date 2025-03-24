@@ -1,0 +1,5 @@
+ktor:
+  development: true
+  deployment:
+    watch:
+      - classes

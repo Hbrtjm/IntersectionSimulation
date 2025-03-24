@@ -7,12 +7,14 @@ import com.example.traffic.utils.*
  */
 
 class IntersectionManager {
-    private val roads: MutableMap<Direction, MutableList<Road>> = mutableMapOf()
+    private val roads: MutableMap<Pair<Direction,Direction>, MutableList<Road>> = mutableMapOf()
     private val vehicleQueue = VehicleQueueHandler(roads)
     private val trafficLightController = TrafficLightController(roads)
-
+    private val cartesianProductOfRoads = Direction.entries.flatMap { firstElement ->
+        Direction.entries.map { secondElement -> Pair(firstElement, secondElement) }
+    }
     init {
-        for (direction in Direction.entries) {
+        for (direction in cartesianProductOfRoads) {
             roads[direction] = listOf(
                 Road(
                     TrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)),
@@ -31,12 +33,14 @@ class IntersectionManager {
         vehicleQueue.addVehicle(Car(vehicleId, start, end))
     }
 
-    fun addRoad(direction: Direction, turnTypes: List<TurnType>)
+    fun addRoad(direction: Direction, turnTypes: List<TurnType>?)
     {
         // There should be at least one road!!!
-        roads[direction]?.add(Road(
-            TrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)),
-            listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)
-        ))
+        turnTypes?.forEach { turnType ->
+            roads[Pair(direction, getDirection(turnType,direction))]?.add(Road(
+                TrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)),
+                listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)
+            ))
+        }
     }
 }

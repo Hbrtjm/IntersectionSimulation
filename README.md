@@ -11,7 +11,7 @@ A recruitment project
 
 ## Backend
 
-I have the most experience with C, however it would be nice to quickly create a prototype of backend in Kotlin. I will have to quickly decide which one to pick.
+Uses Kotlin 
 
 ## Frontend
 

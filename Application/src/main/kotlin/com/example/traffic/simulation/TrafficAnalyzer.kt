@@ -7,50 +7,55 @@ import com.example.traffic.utils.*
  */
 
 
-class TrafficAnalyzer(private val roads: Map<Direction, List<Road>>) {
+class TrafficAnalyzer(private val roads: Map<Pair<Direction,Direction>, List<Road>>) {
     //
     // TODO - Too simple of an algorithm, I just get the road with highest count of cars. This could lead to 'starvation' of other roads.
     //  I think this is analogous to some computation of distributed systems...
     //
-    fun getBusiestDirections(): List<Direction> {
-        val vehicleCounts = mutableListOf<Triple<Direction, TurnType, Int>>()
+    fun getBusiestDirections(): List<Pair<Direction,Direction>>
+    {
+        val vehicleCounts = mutableListOf<Triple<Pair<Direction,Direction>, TurnType, Int>>()
 
-        for ((direction, roadList) in roads) {
-            for (road in roadList) {
-                for (turnType in road.turnTypes) {
+        for ((directionPair, roadList) in roads)
+        {
+            for (road in roadList)
+            {
+                for (turnType in road.turnTypes)
+                {
                     val count = road.vehicleCount()
-                    vehicleCounts.add(Triple(direction, turnType, count))
+                    vehicleCounts.add(Triple(directionPair, turnType, count))
                 }
             }
         }
 
         vehicleCounts.sortByDescending { it.third }
         val maxCount = vehicleCounts.firstOrNull()?.third ?: return emptyList()
+        if (maxCount == 0) return emptyList()
         val busiestRoads = vehicleCounts.filter { it.third == maxCount }
-        val finalRoadDirections: MutableList<Direction> = mutableListOf()
+        val finalRoadDirections: MutableList<Pair<Direction,Direction>> = mutableListOf()
         //
         // TODO - O(n^2) runtime which probably can be optimized, but if we assume the count of roads is less than 1000, everything should be okay
         //
-        for ((direction, turnType, _) in busiestRoads) {
-            if (finalRoadDirections.isEmpty()) {
-                finalRoadDirections.add(direction)
-                continue
-            }
+        for ((directionPair, turnType, _) in busiestRoads)
+        {
             var collision = false
-            for (existingDirection in finalRoadDirections) {
-                if (busiestRoads.any { checkCollision(direction, getDirection(turnType, direction), existingDirection, getDirection(it.second, it.first)) }) {
+            for (existingDirectionPair in finalRoadDirections)
+            {
+                if (busiestRoads.any { checkCollision(directionPair.first, directionPair.second, existingDirectionPair.first, existingDirectionPair.second) } )
+                {
                     collision = true
                     break
                 }
             }
-            if (collision) {
-                finalRoadDirections.add(direction)
+            if (!collision) {
+                finalRoadDirections.add(directionPair)
             }
         }
-        return finalRoadDirections
+        return finalRoadDirections.distinct()
     }
 
-    private fun checkCollision(startFirst: Direction, endFirst: Direction, startSecond: Direction, endSecond: Direction): Boolean {
+    fun checkCollision(startFirst: Direction, endFirst: Direction, startSecond: Direction, endSecond: Direction): Boolean
+    {
 
         val startValueFirst = mapDirection(startFirst)
         val endValueFirst = mapDirection(endFirst)
@@ -60,7 +65,8 @@ class TrafficAnalyzer(private val roads: Map<Direction, List<Road>>) {
         val differenceFirst = startValueFirst - endValueFirst
         val differenceSecond = startValueSecond - endValueSecond
 
-        return when {
+        return when
+        {
             startFirst == startSecond && endFirst == endSecond -> false
             startFirst == endSecond && startSecond == endFirst -> false
             (differenceFirst == 0 && differenceSecond == 0) -> false

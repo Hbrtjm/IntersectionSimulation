@@ -12,18 +12,9 @@ enum class Direction {
     NORTH, WEST, SOUTH, EAST
 }
 
-fun parseDirection(stringDirection: String): Direction? {
-    return when (stringDirection.lowercase()) {
-        "north" -> Direction.NORTH
-        "west" -> Direction.WEST
-        "south" -> Direction.SOUTH
-        "east" -> Direction.EAST
-        else -> null
-    }
-}
-
 fun mapDirection(direction: Direction) : Int
 {
+    // Set North -> 0, East -> 1, South -> 2, West -> 3
     return when (direction) {
         Direction.NORTH -> 0
         Direction.EAST -> 1
