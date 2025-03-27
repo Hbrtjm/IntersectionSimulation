@@ -1,45 +1,41 @@
 package com.example.traffic.utils
 
-class TrafficLight (private val types: List<TurnType>)
-{
-    public var trafficLightCurrentState = parseTrafficLight("RED")
 
-    fun getTrafficLightDirection(direction: Direction): MutableList<Direction>
-    {
-        val result: MutableList<Direction> = arrayListOf()
-        for(type in types)
-        {
-            result.add(getDirection(type,direction))
-        }
-        return result
-    }
+interface TrafficLight<LightState> {
 
-    fun setTrafficLightState(newTrafficLightState: TrafficLightState)
-    {
-        trafficLightCurrentState = newTrafficLightState
-    }
+    /**
+     *
+     * For different light types the passage grant may be different. For regular lights green and yellow (usually) gives way.
+     * For pedestrians, it's different - the blinking green and green light tells person crossing the street that the way is safe.
+     * For tram crossings it's the blinking yellow light (advised caution). There is also a green conditional arrow.
+     *
+     *  @return If the traffic light grants passage for the car
+     *
+     */
+    fun grantsPassage(): Boolean
 
-    fun isGreen(): Boolean
-    {
-        return trafficLightCurrentState == TrafficLightState.GREEN
-    }
+    /**
+     *
+     * Sets the state of the light
+     *
+     * @param state Set the state of the traffic light
+     *
+     */
+    fun setState(state: LightState)
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+    /**
+     *
+     * Switches lights to the next state
+     *
+     */
+    fun nextLight()
 
-        other as TrafficLight
-
-        if (types != other.types) return false
-        if (trafficLightCurrentState != other.trafficLightCurrentState) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = types.hashCode()
-        result = 31 * result + (trafficLightCurrentState?.hashCode() ?: 0)
-        return result
-    }
-
+    /**
+     *
+     * Returns the current state of the traffic light
+     *
+     * @returns LightState value
+     *
+     */
+    fun getState(): LightState
 }

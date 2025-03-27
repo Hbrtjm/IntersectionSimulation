@@ -8,15 +8,6 @@ import org.junit.jupiter.api.Assertions.*
 class RegularTrafficLightTest {
 
     @Test
-    fun getTrafficLightDirectionTest() {
-        val regularTrafficLight = RegularTrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT))
-        val directions = regularTrafficLight.getTrafficLightDirection(Direction.NORTH)
-
-        assertTrue(directions.contains(getDirection(TurnType.FORWARD, Direction.NORTH)))
-        assertTrue(directions.contains(getDirection(TurnType.LEFT, Direction.NORTH)))
-    }
-
-    @Test
     fun setTrafficLightStateTest() {
         val regularTrafficLight = RegularTrafficLight(listOf(TurnType.FORWARD))
         regularTrafficLight.setState(RegularTrafficLightState.GREEN)

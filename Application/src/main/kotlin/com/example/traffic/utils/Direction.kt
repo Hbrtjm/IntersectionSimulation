@@ -7,18 +7,6 @@ package com.example.traffic.utils
  *  - To specify where the traffic light could potentially lead
  *
  */
-
 enum class Direction {
     NORTH, WEST, SOUTH, EAST
-}
-
-fun mapDirection(direction: Direction) : Int
-{
-    // Set North -> 0, East -> 1, South -> 2, West -> 3
-    return when (direction) {
-        Direction.NORTH -> 0
-        Direction.EAST -> 1
-        Direction.SOUTH -> 2
-        Direction.WEST -> 3
-    }
 }

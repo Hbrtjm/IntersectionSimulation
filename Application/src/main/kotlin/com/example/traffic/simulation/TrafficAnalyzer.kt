@@ -1,13 +1,15 @@
 package com.example.traffic.simulation
 
 import com.example.traffic.utils.*
+import com.example.traffic.utils.DirectionFunctions.mapDirection
 
 /**
+ *
  * This class analyzes the traffic. Collects the information about the traffic up to current state and responds to it.
+ *
  */
-
-
 class TrafficAnalyzer(private val roads: Map<Pair<Direction,Direction>, List<Road>>) {
+
     //
     // TODO - Too simple of an algorithm, I just get the road with highest count of cars. This could lead to 'starvation' of other roads.
     //  I think this is analogous to some computation of distributed systems...
@@ -54,6 +56,18 @@ class TrafficAnalyzer(private val roads: Map<Pair<Direction,Direction>, List<Roa
         return finalRoadDirections.distinct()
     }
 
+    /**
+     *
+     * Checks for collisions in given direcitons
+     *
+     * @param startFirst First car starting position on the intersection
+     * @param endFirst First car destination position
+     * @param startSecond Second car starting position
+     * @param endSecond Second car destination position
+     *
+     * @return True if there is a collision between given directions, otherwise false
+     *
+     */
     fun checkCollision(startFirst: Direction, endFirst: Direction, startSecond: Direction, endSecond: Direction): Boolean
     {
 
