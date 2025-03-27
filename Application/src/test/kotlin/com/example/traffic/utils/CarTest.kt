@@ -15,14 +15,14 @@ class CarTest {
     }
 
     @Test
-    fun testToString() {
+    fun toStringTest() {
         val car = Car("vehicle1", Direction.NORTH, Direction.SOUTH)
         val expectedString = "Car(carID=\'vehicle1\', startPoint=NORTH, exitPoint=SOUTH)"
         assertEquals(expectedString, car.toString())
     }
 
     @Test
-    fun testEquals() {
+    fun equalsTest() {
         val car1 = Car("vehicle1", Direction.NORTH, Direction.SOUTH)
         val car2 = Car("vehicle1", Direction.NORTH, Direction.SOUTH)
         val car3 = Car("vehicle3", Direction.EAST, Direction.WEST)
@@ -32,17 +32,17 @@ class CarTest {
     }
 
     @Test
-    fun getCarID() {
+    fun getCarIDTest() {
         assertEquals("vehicle1", car.carID)
     }
 
     @Test
-    fun getStartPoint() {
+    fun getStartPointTest() {
         assertEquals(Direction.WEST, car.startPoint)
     }
 
     @Test
-    fun getExitPoint() {
+    fun getExitPointTest() {
         assertEquals(Direction.EAST, car.exitPoint)
     }
 }

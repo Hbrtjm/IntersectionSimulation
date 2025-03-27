@@ -23,7 +23,6 @@ class VehicleQueueHandlerTest {
                 if (start != end) 
                 {
                     val road = Road(
-                        TrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)),
                         listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)
                     )
                     roads[Pair(start, end)] = mutableListOf(road)
@@ -35,7 +34,7 @@ class VehicleQueueHandlerTest {
     }
 
     @Test
-    fun addVehicle() {
+    fun addVehicleTest() {
         val car = Car("vehicle1", Direction.NORTH, Direction.SOUTH)
 
         vehicleQueueHandler.addVehicle(car)
@@ -45,7 +44,7 @@ class VehicleQueueHandlerTest {
     }
 
     @Test
-    fun addVehicleUniqueId() {
+    fun addVehicleUniqueIdTest() {
         val car = Car("vehicle1", Direction.EAST, Direction.WEST)
 
         vehicleQueueHandler.addVehicle(car)

@@ -18,7 +18,7 @@ class IntersectionManagerTest {
     }
 
     @Test
-    fun addVehicle() {
+    fun addVehicleTest() {
         val vehicleId = "vehicle1"
         val start = Direction.NORTH
         val end = Direction.SOUTH
@@ -29,7 +29,7 @@ class IntersectionManagerTest {
     }
 
     @Test
-    fun addRoad() {
+    fun addRoadTest() {
         val direction = Direction.WEST
         val turnTypes = listOf(TurnType.LEFT, TurnType.RIGHT)
 
@@ -54,6 +54,6 @@ class IntersectionManagerTest {
 
         // At least one vehicle should be processed
         assertTrue(leftVehicles.isNotEmpty(), "Simulation step should process at least one vehicle")
-        assertTrue(leftVehicles.contains(vehicle1), "It should be the first vehicle that was added")
+        assertTrue(leftVehicles.contains(vehicle1), "It should be the first vehicle that was added $leftVehicles")
     }
 }

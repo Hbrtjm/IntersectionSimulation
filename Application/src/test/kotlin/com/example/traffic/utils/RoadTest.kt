@@ -5,56 +5,58 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 class RoadTest {
-    @Test
-    fun getTrafficLight() {
-        val trafficLight = TrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT))
-        val road = Road(trafficLight, listOf(TurnType.FORWARD, TurnType.LEFT))
-        assertEquals(trafficLight, road.trafficLight)
-    }
+    // TODO - Delete this, refactor
+//    @Test
+//    fun getTrafficLightTest() {
+//        val regularTrafficLight = RegularTrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT))
+//        val road = Road(listOf(TurnType.FORWARD, TurnType.LEFT))
+//        assertEquals(regularTrafficLight, road.subscribedTrafficLights[0])
+//    }
 
     @Test
-    fun getTurnTypes() {
+    fun getTurnTypesTest() {
         val turnTypes = listOf(TurnType.FORWARD, TurnType.RIGHT)
-        val road = Road(TrafficLight(turnTypes), turnTypes)
+        val road = Road(turnTypes)
         assertEquals(turnTypes, road.turnTypes)
     }
 
     @Test
-    fun add() {
-        val road = Road(TrafficLight(listOf(TurnType.FORWARD)), listOf(TurnType.FORWARD))
-        val car = Car("CAR123", Direction.NORTH, Direction.SOUTH)
+    fun addTest() {
+        val road = Road(listOf(TurnType.FORWARD))
+        val car = Car("vehicle1", Direction.NORTH, Direction.SOUTH)
         road.add(car)
         assertEquals(1, road.vehicleCount())
     }
 
     @Test
-    fun vehicleCount() {
-        val road = Road(TrafficLight(listOf(TurnType.FORWARD)), listOf(TurnType.FORWARD))
+    fun vehicleCountTest() {
+        val road = Road(listOf(TurnType.FORWARD))
         assertEquals(0, road.vehicleCount())
-        road.add(Car("CAR123", Direction.NORTH, Direction.SOUTH))
-        road.add(Car("CAR456", Direction.EAST, Direction.WEST))
+        road.add(Car("vehicle1", Direction.NORTH, Direction.SOUTH))
+        road.add(Car("vehicle2", Direction.EAST, Direction.WEST))
         assertEquals(2, road.vehicleCount())
     }
 
     @Test
-    fun moveCars() {
-        val trafficLight = TrafficLight(listOf(TurnType.FORWARD))
-        val road = Road(trafficLight, listOf(TurnType.FORWARD))
-        val car = Car("CAR123", Direction.NORTH, Direction.SOUTH)
+    fun moveCarsTest() {
+        val regularTrafficLight = RegularTrafficLight(listOf(TurnType.FORWARD))
+        val road = Road(listOf(TurnType.FORWARD))
+        val car = Car("vehicle1", Direction.NORTH, Direction.SOUTH)
         road.add(car)
+        regularTrafficLight.registerRoad(road)
 
-        trafficLight.setTrafficLightState(TrafficLightState.RED)
+        regularTrafficLight.setState(RegularTrafficLightState.RED)
         assertNull(road.moveCars(Direction.NORTH, Direction.SOUTH))
 
-        trafficLight.setTrafficLightState(TrafficLightState.GREEN)
+        regularTrafficLight.setState(RegularTrafficLightState.GREEN)
         assertEquals(car, road.moveCars(Direction.NORTH, Direction.SOUTH))
         assertEquals(0, road.vehicleCount())
     }
 
     @Test
-    fun testToString() {
-        val road = Road(TrafficLight(listOf(TurnType.FORWARD)), listOf(TurnType.FORWARD))
-        val expectedString = "Road(cars=${road.cars}, trafficLight=${road.trafficLight}, turnTypes=${road.turnTypes})"
+    fun testToStringTest() {
+        val road = Road(listOf(TurnType.FORWARD))
+        val expectedString = "Road(cars=${road.cars}, turnTypes=${road.turnTypes})"
         assertEquals(expectedString, road.toString())
     }
 }

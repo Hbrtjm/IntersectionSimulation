@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 
-class TrafficLightControllerTest {
+class RegularTrafficLightControllerTest {
 
     private lateinit var roads: MutableMap<Pair<Direction, Direction>, MutableList<Road>>
-    private lateinit var trafficLightController: TrafficLightController
-
+    private lateinit var regularTrafficLightController: RegularTrafficLightController
+    private lateinit var lights: MutableMap<Pair<Direction, Direction>, MutableList<RegularTrafficLight>>
     @BeforeEach
     fun setUp() {
         roads = mutableMapOf()
-
+        lights = mutableMapOf()
         // Initialize roads for different direction pairs
         for (start in Direction.entries) 
         {
@@ -23,7 +23,6 @@ class TrafficLightControllerTest {
                 if (start != end) 
                 {
                     val road = Road(
-                        TrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)),
                         listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)
                     )
                     roads[Pair(start, end)] = mutableListOf(road)
@@ -31,12 +30,12 @@ class TrafficLightControllerTest {
             }
         }
 
-        trafficLightController = TrafficLightController(roads)
+        regularTrafficLightController = RegularTrafficLightController(roads, lights)
     }
 
     @Test
     fun init() {
-        assertTrue(trafficLightController.activeRoads.isEmpty(), "Initially, no roads should be active")
+        assertTrue(regularTrafficLightController.activeRoads.isEmpty(), "Initially, no roads should be active")
     }
 
     @Test
@@ -44,22 +43,22 @@ class TrafficLightControllerTest {
         val busiestPair = Pair(Direction.NORTH, Direction.SOUTH)
         val road = roads[busiestPair]?.firstOrNull() ?: fail("Road should exist")
 
-        repeat(5) { 
-            road.add(Car("CAR$it", Direction.NORTH, Direction.SOUTH)) 
+        repeat(5) {
+            road.add(Car("CAR$it", Direction.NORTH, Direction.SOUTH))
         }
 
-        trafficLightController.step()
+        regularTrafficLightController.step()
 
-        assertTrue(trafficLightController.activeRoads.contains(busiestPair), "Busiest road should be active")
-        assertEquals(TrafficLightState.GREEN, road.trafficLight.trafficLightCurrentState, "Traffic light on busiest road should be green")
+        assertTrue(regularTrafficLightController.activeRoads.contains(busiestPair), "Busiest road should be active")
+        lights[busiestPair]?.get(0)?.let { assertTrue(it.grantsPassage(), "Traffic light on busiest road should be green") }
 
-        for ((pair, roadList) in roads) 
+        for ((pair, roadList) in roads)
         {
-            if (pair != busiestPair) 
+            if (pair != busiestPair)
             {
-                for (r in roadList) 
+                for (r in roadList)
                 {
-                    assertEquals(TrafficLightState.RED, r.trafficLight.trafficLightCurrentState, "Non-busiest roads should have red lights")
+                    lights[busiestPair]?.get(0)?.let { assertFalse(it.grantsPassage(), "Traffic light on busiest road should be green") }
                 }
             }
         }
@@ -73,14 +72,14 @@ class TrafficLightControllerTest {
         val road2 = roads[anotherPair]?.firstOrNull() ?: fail("Road should exist")
 
         road2.add(Car("dummy", Direction.NORTH, Direction.SOUTH))
-        repeat(3) 
+        repeat(3)
         {
             road1.add(Car("EAST_WEST_$it", Direction.EAST, Direction.WEST))
         }
 
-        trafficLightController.step()
+        regularTrafficLightController.step()
 
-        val activeRoads = trafficLightController.activeRoads
+        val activeRoads = regularTrafficLightController.activeRoads
         assertEquals(1, activeRoads.size, "Busiest roads should be active and should not collide")
         assertEquals(busiestPair, activeRoads.first(), "The busiest road should be active")
     }

@@ -22,7 +22,6 @@ class TrafficAnalyzerTest {
                 if (start != end) 
                 {
                     val road = Road(
-                        TrafficLight(listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)),
                         listOf(TurnType.FORWARD, TurnType.LEFT, TurnType.RIGHT)
                     )
                     roads[Pair(start, end)] = mutableListOf(road)
@@ -34,17 +33,16 @@ class TrafficAnalyzerTest {
     }
 
     @Test
-    fun getBusiestDirectionEmpty() {
+    fun getBusiestDirectionEmptyTest() {
         val busiestDirections = trafficAnalyzer.getBusiestDirections()
         assertTrue(busiestDirections.isEmpty(), "No roads should be marked as busiest when there are no vehicles $busiestDirections")
     }
 
     @Test
-    fun getBusiestDirection() {
+    fun getBusiestDirectionTest() {
         val busiestPair = Pair(Direction.NORTH, Direction.SOUTH)
         val road = roads[busiestPair]?.firstOrNull() ?: fail("Road should exist")
 
-        // Simulate vehicles on this road
         repeat(5) { road.add(Car("CAR$it", Direction.NORTH, Direction.SOUTH)) }
 
         val busiestDirections = trafficAnalyzer.getBusiestDirections()
@@ -53,7 +51,7 @@ class TrafficAnalyzerTest {
     }
 
     @Test
-    fun getBusiestDirectionEqual() {
+    fun getBusiestDirectionEqualTest() {
         val road1Pair = Pair(Direction.EAST, Direction.WEST)
         val road2Pair = Pair(Direction.WEST, Direction.EAST)
         val road3Pair = Pair(Direction.NORTH, Direction.WEST) // Any road that has different starting position than East or West
@@ -75,18 +73,17 @@ class TrafficAnalyzerTest {
 
 
     @Test
-    fun checkCollision() {
+    fun checkCollisionTest() {
         assertFalse(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.NORTH, Direction.SOUTH), "Same path should not collide")
         assertFalse(trafficAnalyzer.checkCollision(Direction.WEST, Direction.EAST, Direction.WEST, Direction.EAST), "Same path should not collide")
         assertFalse(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.SOUTH, Direction.NORTH), "Opposite directions should not collide")
         assertFalse(trafficAnalyzer.checkCollision(Direction.WEST, Direction.EAST, Direction.EAST, Direction.WEST), "Opposite directions should not collide")
-        // TODO - Issues with collision detection to be checked... The collision detection has to be corrected
-        //        assertTrue(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST), "Crossing roads should collide")
-        //        assertTrue(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.WEST, Direction.SOUTH, Direction.EAST), "Angled turns should collide")
-        //        assertTrue(trafficAnalyzer.checkCollision(Direction.EAST, Direction.NORTH, Direction.WEST, Direction.SOUTH), "Diagonal movement should collide")
-        //
-        //        assertFalse(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST), "Parallel movements should not collide")
-        //        assertFalse(trafficAnalyzer.checkCollision(Direction.WEST, Direction.SOUTH, Direction.EAST, Direction.NORTH), "Parallel movements should not collide")
+        assertTrue(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST), "Crossing roads should collide")
+        assertTrue(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.WEST, Direction.SOUTH, Direction.EAST), "Angled turns should collide")
+        assertTrue(trafficAnalyzer.checkCollision(Direction.EAST, Direction.NORTH, Direction.WEST, Direction.SOUTH), "Diagonal movement should collide")
+
+        assertFalse(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST), "Parallel movements should not collide")
+        assertFalse(trafficAnalyzer.checkCollision(Direction.WEST, Direction.SOUTH, Direction.EAST, Direction.NORTH), "Parallel movements should not collide")
     }
 
 }

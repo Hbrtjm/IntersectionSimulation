@@ -3,39 +3,30 @@ package com.example.traffic.utils
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import com.example.traffic.utils.*
 
-class TrafficLightStateEnumTest {
+class RegularRegularTrafficLightStateEnumTest {
 
     @Test
-    fun getEntries() {
-        val entries = TrafficLightState.entries
-        assertTrue(entries.containsAll(listOf(TrafficLightState.RED,TrafficLightState.GREEN,TrafficLightState.YELLOW)))
+    fun getEntriesTest() {
+        val entries = RegularTrafficLightState.entries
+        assertTrue(entries.containsAll(listOf(RegularTrafficLightState.RED,RegularTrafficLightState.GREEN,RegularTrafficLightState.YELLOW)))
     }
 
     @Test
-    fun values() {
-        val values = TrafficLightState.values()
-        assertEquals(3, values.size)
-        assertEquals(TrafficLightState.GREEN, values[0])
-        assertEquals(TrafficLightState.YELLOW, values[1])
-        assertEquals(TrafficLightState.RED, values[2])
+    fun valuesTest() {
+        val values = RegularTrafficLightState.entries.toTypedArray()
+        assertEquals(5, values.size)
+        assertEquals(RegularTrafficLightState.GREEN, values[0])
+        assertEquals(RegularTrafficLightState.RED_YELLOW, values[1])
+        assertEquals(RegularTrafficLightState.YELLOW, values[2])
+        assertEquals(RegularTrafficLightState.RED, values[3])
+        assertEquals(RegularTrafficLightState.BROKEN, values[4])
     }
 
     @Test
-    fun valueOf() {
-        assertEquals(TrafficLightState.GREEN, TrafficLightState.valueOf("GREEN"))
-        assertEquals(TrafficLightState.YELLOW, TrafficLightState.valueOf("YELLOW"))
-        assertEquals(TrafficLightState.RED, TrafficLightState.valueOf("RED"))
-    }
-}
-
-class TrafficLightStateFunctionsTest {
-
-    @Test
-    fun parseTrafficLight() {
-        assertEquals(parseTrafficLight("ReD"),TrafficLightState.RED)
-        assertEquals(parseTrafficLight("GREEN"),TrafficLightState.GREEN)
-        assertEquals(parseTrafficLight("yellow"),TrafficLightState.YELLOW)
+    fun valueOfTest() {
+        assertEquals(RegularTrafficLightState.GREEN, RegularTrafficLightState.valueOf("GREEN"))
+        assertEquals(RegularTrafficLightState.YELLOW, RegularTrafficLightState.valueOf("YELLOW"))
+        assertEquals(RegularTrafficLightState.RED, RegularTrafficLightState.valueOf("RED"))
     }
 }
