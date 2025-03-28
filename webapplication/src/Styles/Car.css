@@ -1,0 +1,19 @@
+.car {
+  /* background-color: gray; */
+  animation: car-engine infinite ease-in 0.2s reverse;
+}
+
+@keyframes car-engine {
+  0% 
+  {
+    transform: scale(100%);
+  }
+  20% 
+  {
+    transform: scale(110%);
+  }
+  100%
+  {
+    transform: scale(100%);
+  }
+}

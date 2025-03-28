@@ -1,0 +1,19 @@
+.green{
+    filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg) brightness(118%) contrast(119%);
+}
+
+.yellow{
+    filter: invert(81%) sepia(27%) saturate(1151%) hue-rotate(4deg) brightness(110%) contrast(84%);
+}
+
+.red{
+    filter: invert(30%) sepia(58%) saturate(6314%) hue-rotate(349deg) brightness(98%) contrast(81%);
+}
+
+.blue{
+    filter: invert(41%) sepia(54%) saturate(910%) hue-rotate(183deg) brightness(98%) contrast(101%);
+}
+
+.orange{
+    filter: invert(53%) sepia(67%) saturate(2013%) hue-rotate(340deg) brightness(97%) contrast(90%);
+}
