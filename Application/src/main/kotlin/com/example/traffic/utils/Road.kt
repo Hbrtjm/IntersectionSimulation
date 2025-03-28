@@ -5,15 +5,14 @@ import com.example.traffic.utils.TurnTypeFunctions.getTurnType
 /**
  *
  * Represents a road that has cars, a traffic light, and specific turn types for vehicle movement.
- *
- * This class handles the vehicles on the road, the associated traffic light(s), and the turn directions
+ * Handles the vehicles on the road, the associated traffic light(s), and the turn directions
  * for each vehicle at an intersection.
  *
- * - subscribedRegularTrafficLight: A traffic light that governs the flow of traffic on this road.
- * - turnTypes: A list specifying the possible directions in which vehicles can turn (e.g., left, right, forward).
+ * - subscribedRegularTrafficLight: A traffic light that manages the flow of traffic on this road.
+ * - turnTypes: A list specifying the possible directions in which vehicles can turn.
  *
  * The road can process cars that are queued to pass through the intersection, based on the state of the traffic light
- * and the allowed turn types. The `moveCars` method will allow cars to pass if the light is green and the direction is valid.
+ * and the allowed turn types. The moveCars method will allow cars to pass if the light is green and the direction is valid.
  *
  */
 class Road(turnTypes: List<TurnType>) {
@@ -63,7 +62,6 @@ class Road(turnTypes: List<TurnType>) {
     /**
      *
      * Attempts to move the first car in the queue based on the traffic light state and turn direction.
-     *
      * The car can only move if the traffic light is green and if the direction of movement is allowed
      * based on the road's specified turn types. For now, the direction logic is simplified but should
      * be expanded to handle specific road directions and traffic rules.
@@ -73,8 +71,10 @@ class Road(turnTypes: List<TurnType>) {
      * @return The moved car, or `null` if the car couldn't move (e.g., the light isn't green or the direction is invalid).
      *
      */
-    fun moveCars(startDirection: Direction, endDirection: Direction): Car? {
-        if (activeDirections.contains(getTurnType(startDirection, endDirection))) {
+    fun moveCars(startDirection: Direction, endDirection: Direction): Car?
+    {
+        if (activeDirections.contains(getTurnType(startDirection, endDirection)))
+        {
             if(cars.size == 0)
             {
                 return null

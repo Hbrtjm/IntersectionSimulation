@@ -7,7 +7,7 @@ package com.example.traffic.utils
  * @property startPoint The direction from which the car enters.
  * @property exitPoint The direction in which the car exits.
  *
- * @constructor Creates a Car object with the specified ID, starting point, and exit point.
+ * @constructor Creates a [Car] object with the specified ID, starting point, and exit point.
  *
  */
 data class Car(val carID: String, val startPoint: Direction, val exitPoint: Direction) {

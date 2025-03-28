@@ -52,6 +52,8 @@ class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTraf
 
     /**
      * Transitions the traffic light to the next state in its sequence.
+     * Only emits lightChanged() when light changed to GREEN or RED, as these are the states that change how the car behaves. However, if I were to implement a real-time websocket that updates
+     * traffic lights on the frontend, I would need to emit another call that will inform the server to send new information.
      *
      * The order of states is as follows:
      * - RED -> RED_YELLOW

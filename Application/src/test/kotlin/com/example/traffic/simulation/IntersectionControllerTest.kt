@@ -8,13 +8,13 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 
 
-class IntersectionManagerTest {
+class IntersectionControllerTest {
 
-    private lateinit var intersectionManager: IntersectionManager
+    private lateinit var intersectionController: IntersectionController
 
     @BeforeEach
     fun setUp() {
-        intersectionManager = IntersectionManager()
+        intersectionController = IntersectionController()
     }
 
     @Test
@@ -22,9 +22,9 @@ class IntersectionManagerTest {
         val vehicleId = "vehicle1"
         val start = Direction.NORTH
         val end = Direction.SOUTH
-        intersectionManager.addVehicle(vehicleId, start, end)
+        intersectionController.addVehicle(vehicleId, start, end)
 
-        val leftVehicles = intersectionManager.simulationStep()
+        val leftVehicles = intersectionController.simulationStep()
         assertTrue(leftVehicles.contains(vehicleId), "Vehicle should have departed")
     }
 
@@ -33,10 +33,10 @@ class IntersectionManagerTest {
         val direction = Direction.WEST
         val turnTypes = listOf(TurnType.LEFT, TurnType.RIGHT)
 
-        intersectionManager.addRoad(direction, turnTypes)
+        intersectionController.addRoad(direction, turnTypes)
 
         assertDoesNotThrow {
-            intersectionManager.addRoad(direction, turnTypes)
+            intersectionController.addRoad(direction, turnTypes)
         }
     }
 
@@ -46,11 +46,11 @@ class IntersectionManagerTest {
         val vehicle2 = "vehicle2"
         val vehicle3 = "vehicle3"
 
-        intersectionManager.addVehicle(vehicle1, Direction.NORTH, Direction.SOUTH)
-        intersectionManager.addVehicle(vehicle2, Direction.EAST, Direction.WEST)
-        intersectionManager.addVehicle(vehicle3, Direction.WEST, Direction.EAST)
+        intersectionController.addVehicle(vehicle1, Direction.NORTH, Direction.SOUTH)
+        intersectionController.addVehicle(vehicle2, Direction.EAST, Direction.WEST)
+        intersectionController.addVehicle(vehicle3, Direction.WEST, Direction.EAST)
 
-        val leftVehicles = intersectionManager.simulationStep()
+        val leftVehicles = intersectionController.simulationStep()
 
         // At least one vehicle should be processed
         assertTrue(leftVehicles.isNotEmpty(), "Simulation step should process at least one vehicle")

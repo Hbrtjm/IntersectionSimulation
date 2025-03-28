@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 
-class TrafficAnalyzerTest {
+class TrafficCounterControllerTest {
 
     private lateinit var roads: MutableMap<Pair<Direction, Direction>, MutableList<Road>>
-    private lateinit var trafficAnalyzer: TrafficAnalyzer
+    private lateinit var trafficCounterController: TrafficCounterController
 
     @BeforeEach
     fun setUp() {
@@ -29,12 +29,12 @@ class TrafficAnalyzerTest {
             }
         }
 
-        trafficAnalyzer = TrafficAnalyzer(roads)
+        trafficCounterController = TrafficCounterController(roads)
     }
 
     @Test
     fun getBusiestDirectionEmptyTest() {
-        val busiestDirections = trafficAnalyzer.getBusiestDirections()
+        val busiestDirections = trafficCounterController.getBusiestDirections()
         assertTrue(busiestDirections.isEmpty(), "No roads should be marked as busiest when there are no vehicles $busiestDirections")
     }
 
@@ -45,7 +45,7 @@ class TrafficAnalyzerTest {
 
         repeat(5) { road.add(Car("CAR$it", Direction.NORTH, Direction.SOUTH)) }
 
-        val busiestDirections = trafficAnalyzer.getBusiestDirections()
+        val busiestDirections = trafficCounterController.getBusiestDirections()
         assertEquals(1, busiestDirections.size, "Only one direction should be marked as busiest")
         assertEquals(busiestPair, busiestDirections.first(), "The correct road should be marked as busiest")
     }
@@ -65,7 +65,7 @@ class TrafficAnalyzerTest {
             road2.add(Car("WEST_EAST_$it", Direction.WEST, Direction.EAST))
         }
 
-        val busiestDirections = trafficAnalyzer.getBusiestDirections()
+        val busiestDirections = trafficCounterController.getBusiestDirections()
         assertEquals(2, busiestDirections.size, "Both roads should be marked as busiest $busiestDirections")
         assertTrue(busiestDirections.contains(road1Pair), "East-to-West road should be marked busiest")
         assertTrue(busiestDirections.contains(road2Pair), "West-to-East road should be marked busiest")
@@ -74,16 +74,17 @@ class TrafficAnalyzerTest {
 
     @Test
     fun checkCollisionTest() {
-        assertFalse(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.NORTH, Direction.SOUTH), "Same path should not collide")
-        assertFalse(trafficAnalyzer.checkCollision(Direction.WEST, Direction.EAST, Direction.WEST, Direction.EAST), "Same path should not collide")
-        assertFalse(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.SOUTH, Direction.NORTH), "Opposite directions should not collide")
-        assertFalse(trafficAnalyzer.checkCollision(Direction.WEST, Direction.EAST, Direction.EAST, Direction.WEST), "Opposite directions should not collide")
-//        assertTrue(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST), "Crossing roads should collide")
-        assertTrue(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.WEST, Direction.SOUTH, Direction.EAST), "Angled turns should collide")
-        assertTrue(trafficAnalyzer.checkCollision(Direction.EAST, Direction.NORTH, Direction.WEST, Direction.SOUTH), "Diagonal movement should collide")
+        assertFalse(trafficCounterController.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.NORTH, Direction.SOUTH), "Same path should not collide")
+        assertFalse(trafficCounterController.checkCollision(Direction.WEST, Direction.EAST, Direction.WEST, Direction.EAST), "Same path should not collide")
+        assertFalse(trafficCounterController.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.SOUTH, Direction.NORTH), "Opposite directions should not collide")
+        assertFalse(trafficCounterController.checkCollision(Direction.WEST, Direction.EAST, Direction.EAST, Direction.WEST), "Opposite directions should not collide")
 
-//        assertFalse(trafficAnalyzer.checkCollision(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST), "Parallel movements should not collide")
-//        assertFalse(trafficAnalyzer.checkCollision(Direction.WEST, Direction.SOUTH, Direction.EAST, Direction.NORTH), "Parallel movements should not collide")
+        assertTrue(trafficCounterController.checkCollision(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST), "Crossing roads should collide")
+        assertTrue(trafficCounterController.checkCollision(Direction.NORTH, Direction.WEST, Direction.SOUTH, Direction.EAST), "Angled turns should collide")
+        assertTrue(trafficCounterController.checkCollision(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST), "Parallel movements should not collide")
+        assertTrue(trafficCounterController.checkCollision(Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.NORTH), "Parallel movements should not collide")
+
+        assertFalse(trafficCounterController.checkCollision(Direction.WEST, Direction.SOUTH, Direction.EAST, Direction.NORTH), "Parallel movements should not collide")
     }
 
 }

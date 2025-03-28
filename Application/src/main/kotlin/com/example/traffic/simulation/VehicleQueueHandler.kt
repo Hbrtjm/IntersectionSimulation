@@ -54,7 +54,6 @@ class VehicleQueueHandler(private val roads: MutableMap<Pair<Direction, Directio
         if (carsSet.contains(car)) {
             error("Car already exists in the set")
         }
-        // This should ideally notify the caller about a potential ID collision instead of silently handling it.
         carsSet.add(car)
         addCar(car, roads[Pair(car.startPoint, car.exitPoint)]) // Assign the car to the appropriate road.
     }

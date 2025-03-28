@@ -1,18 +1,18 @@
 package com.example.traffic.commands
 
-import com.example.traffic.simulation.IntersectionManager
+import com.example.traffic.simulation.IntersectionController
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
 class CommandTranslatorTest {
 
-    private lateinit var intersectionManager: IntersectionManager
+    private lateinit var intersectionController: IntersectionController
     private lateinit var stepResults: MutableList<StepResponse>
 
     @BeforeEach
     fun setUp() {
-        intersectionManager = IntersectionManager()
+        intersectionController = IntersectionController()
         stepResults = mutableListOf()
     }
 
@@ -26,7 +26,7 @@ class CommandTranslatorTest {
             direction = null,
             turnTypes = null,
             stepResults = stepResults,
-            intersectionManager = intersectionManager
+            intersectionController = intersectionController
         )
         assertTrue(stepResults.isEmpty())
     }
@@ -41,7 +41,7 @@ class CommandTranslatorTest {
             direction = null,
             turnTypes = null,
             stepResults = stepResults,
-            intersectionManager = intersectionManager
+            intersectionController = intersectionController
         )
         if (DebugModeController.isDebugModeOn()) {
             assertEquals(1, stepResults.size)
@@ -62,7 +62,7 @@ class CommandTranslatorTest {
             direction = null,
             turnTypes = null,
             stepResults = stepResults,
-            intersectionManager = intersectionManager
+            intersectionController = intersectionController
         )
         assertEquals(1, stepResults.size)
         assertTrue(stepResults[0] is JsonStepResponse)
@@ -80,7 +80,7 @@ class CommandTranslatorTest {
             direction = "east",
             turnTypes = listOf("LEFT", "RIGHT"),
             stepResults = stepResults,
-            intersectionManager = intersectionManager
+            intersectionController = intersectionController
         )
         if (DebugModeController.isDebugModeOn()) {
             assertEquals(1, stepResults.size)
@@ -101,7 +101,7 @@ class CommandTranslatorTest {
             direction = null,
             turnTypes = null,
             stepResults = stepResults,
-            intersectionManager = intersectionManager
+            intersectionController = intersectionController
         )
         assertEquals(1, stepResults.size)
         assertTrue(stepResults[0] is ListStepResponse)

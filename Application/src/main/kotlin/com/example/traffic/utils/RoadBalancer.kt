@@ -10,6 +10,13 @@ import com.example.traffic.utils.TurnTypeFunctions.getTurnType
 object RoadBalancer {
     private var balanceMode: RoadBalancerMode = RoadBalancerMode.BALANCE
 
+    /**
+     *
+     * Sets mode for the road balancer
+     *
+     * @param newMode The new mode under which the RoadBalancer will operate
+     *
+     */
     fun setBalanceMode(newMode: RoadBalancerMode)
     {
         balanceMode = newMode

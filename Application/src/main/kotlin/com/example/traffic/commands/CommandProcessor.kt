@@ -1,6 +1,6 @@
 package com.example.traffic.commands
 
-import com.example.traffic.simulation.IntersectionManager
+import com.example.traffic.simulation.IntersectionController
 
 /**
  *
@@ -17,11 +17,11 @@ object CommandProcessor {
      * Processes a list of commands and applies them to the intersection manager.
      *
      * @param commands The list of commands to be executed.
-     * @param intersectionManager The intersection manager to apply the commands to.
+     * @param intersectionController The intersection manager to apply the commands to.
      * @return A list of step responses generated after executing the commands.
      *
      */
-    fun runCommands(commands: Commands, intersectionManager: IntersectionManager): List<StepResponse>
+    fun runCommands(commands: Commands, intersectionController: IntersectionController): List<StepResponse>
     {
         val stepResults = mutableListOf<StepResponse>()
 
@@ -34,7 +34,7 @@ object CommandProcessor {
                 command.direction,
                 command.turnTypes,
                 stepResults,
-                intersectionManager
+                intersectionController
             )
         }
 
