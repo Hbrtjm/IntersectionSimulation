@@ -1,0 +1,27 @@
+name: Build & Deploy Intersection Simulation App
+
+on:
+  push: 
+    branches:
+      - main
+      # - development # For later
+
+jobs:
+  run-tests:
+    name: Run tests on the application
+    runs-on: ubuntu-latest
+    container:
+      image: composer:latest
+      volumes: 
+        - main-app:/app
+    steps:
+      - name: Running composer intstall
+        run: composer install
+      - name: Running test
+        run: ./
+
+  build-deploy:
+    name: Build and deploy Intersection simulation application
+    runs-on: ubuntu-latest
+    steps:
+      - name: 
