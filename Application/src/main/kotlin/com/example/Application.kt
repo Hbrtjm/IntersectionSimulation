@@ -18,6 +18,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import java.io.FileNotFoundException
 import java.nio.file.Paths
 import com.example.traffic.commands.CommandProcessor.runCommands
+import com.example.traffic.commands.CommandTranslator.convertStepResponses
 
 
 //import io.ktor.client.*
@@ -25,21 +26,7 @@ import com.example.traffic.commands.CommandProcessor.runCommands
 //import io.ktor.client.plugins.websocket.*
 //import kotlinx.coroutines.runBlocking
 
-// TODO - Documentation and Comments, a lot of comments and refactoring, but at least we have the base application
-
 fun main() {
-   fun convertStepResponses(stepResponses: List<StepResponse>): List<StepStatus> {
-        return stepResponses.mapNotNull { stepResponse ->
-            if (stepResponse is JsonStepResponse) {
-                val jsonObject = stepResponse.response as? JsonObject
-                val carsLeft = jsonObject?.get("carsLeft")?.jsonArray?.map { it.jsonPrimitive.content } ?: emptyList()
-                StepStatus(carsLeft)
-            } else {
-                null
-            }
-        }
-    }
-
     val intersectionManager = IntersectionManager()
 
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", watchPaths = listOf("classes")) {
@@ -71,7 +58,7 @@ fun main() {
             {
                 get("/{inputFileName}")
                 {
-                    val inputFileName = call.parameters["inputFileName"]!! + ".json"
+                    val inputFileName = call.parameters["inputFileName"]
                     try{
                         val fileHandler = FileHandler(inputFileName)
                         fileHandler.readData()
@@ -84,8 +71,8 @@ fun main() {
                 }
                 get("/{inputFileName}/{outPutFileName}")
                 {
-                    val inputFileName = call.parameters["inputFileName"]!! + ".json"
-                    val outputFileName = call.parameters["outputFileName"]!! + ".json"
+                    val inputFileName = call.parameters["inputFileName"]
+                    val outputFileName = call.parameters["outputFileName"]
                     try{
                         val fileHandler = FileHandler(inputFileName,outputFileName)
                         fileHandler.readData()

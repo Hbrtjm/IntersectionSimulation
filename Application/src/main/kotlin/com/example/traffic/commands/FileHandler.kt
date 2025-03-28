@@ -6,6 +6,10 @@ import kotlinx.serialization.json.Json
 import java.io.File
 import java.nio.charset.Charset
 import com.example.traffic.commands.CommandProcessor.runCommands
+import com.example.traffic.commands.CommandTranslator.convertStepResponses
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.response.*
 
 /**
  *
@@ -18,7 +22,7 @@ import com.example.traffic.commands.CommandProcessor.runCommands
  * @param outputFileName The name of the output JSON file to store results (optional, defaults to null).
  *
  */
-class FileHandler(private val inputFileName: String, private var outputFileName: String? = null) {
+class FileHandler(private val inputFileName: String?, private var outputFileName: String? = null) {
 
     private val intersectionManager = IntersectionManager()
     private lateinit var cleanFileName: String
@@ -35,7 +39,11 @@ class FileHandler(private val inputFileName: String, private var outputFileName:
      * @throws Exception if an error occurs during file reading, command processing, or writing.
      *
      */
-    fun readData() {
+    fun readData(): String {
+        if(inputFileName == null)
+        {
+            return "File name not provided"
+        }
         try {
             cleanFileName = makeJson(inputFileName)
             val json = File(cleanFileName).readText(Charset.defaultCharset())
@@ -50,9 +58,10 @@ class FileHandler(private val inputFileName: String, private var outputFileName:
                 }
             }
             writeData(results)
+            return "Successfully wrote to file"
         } catch (e: Exception) {
             e.printStackTrace()
-            throw e
+            return "An error has occurred $e"
         }
     }
 
@@ -80,16 +89,37 @@ class FileHandler(private val inputFileName: String, private var outputFileName:
      * @param results A list of StepResponses containing the results of command execution.
      *
      */
+    // TODO - Simplify the code here
     private fun writeData(results: List<StepResponse>) {
-        try {
-            if(outputFileName == null)
-            {
-                outputFileName = "results_$cleanFileName"
+        if(!DebugModeController.isDebugModeOn())
+        {
+//                    val finalResponse = StepStatusesResponse(results.map { it as JsonStepResponse })
+            val finalResult =  StepStatusesResponse(convertStepResponses(results))
+            try {
+                if(outputFileName == null)
+                {
+                    outputFileName = "results_$cleanFileName"
+                }
+                val jsonOutput = Json.encodeToString(finalResult)
+                outputFileName?.let { File(it).writeText(jsonOutput, Charset.defaultCharset()) }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            val jsonOutput = Json.encodeToString(results)
-            outputFileName?.let { File(it).writeText(jsonOutput, Charset.defaultCharset()) }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        }
+        else
+        {
+            val finalResult = results
+            try {
+                if(outputFileName == null)
+                {
+                    outputFileName = "results_$cleanFileName"
+                }
+                val jsonOutput = Json.encodeToString(finalResult)
+                outputFileName?.let { File(it).writeText(jsonOutput, Charset.defaultCharset()) }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
+
 }

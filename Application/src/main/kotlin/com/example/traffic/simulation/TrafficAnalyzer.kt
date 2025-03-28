@@ -38,7 +38,7 @@ class TrafficAnalyzer(private val roads: Map<Pair<Direction,Direction>, List<Roa
         //
         // TODO - O(n^2) runtime which probably can be optimized, but if we assume the count of roads is less than 1000, everything should be okay
         //
-        for ((directionPair, turnType, _) in busiestRoads)
+        for ((directionPair, _, _) in busiestRoads)
         {
             var collision = false
             for (existingDirectionPair in finalRoadDirections)
@@ -58,7 +58,7 @@ class TrafficAnalyzer(private val roads: Map<Pair<Direction,Direction>, List<Roa
 
     /**
      *
-     * Checks for collisions in given direcitons
+     * Checks for collisions in given directions
      *
      * @param startFirst First car starting position on the intersection
      * @param endFirst First car destination position

@@ -1,6 +1,5 @@
 package com.example.traffic.utils
 
-import com.example.traffic.utils.TurnTypeFunctions.getDirection
 /**
  *
  * Represents a regular traffic light that follows a predefined sequence of states.
@@ -11,7 +10,7 @@ import com.example.traffic.utils.TurnTypeFunctions.getDirection
 class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTrafficLight<RegularTrafficLightState>(turnTypes) {
 
     /** The current state of the traffic light, initialized to RED. */
-    var _trafficLightState: RegularTrafficLightState = RegularTrafficLightState.RED
+    var trafficLightState: RegularTrafficLightState = RegularTrafficLightState.RED
 
     /**
      *
@@ -20,7 +19,7 @@ class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTraf
      * @return The current state of the traffic light.
      *
      */
-    override fun getState(): RegularTrafficLightState = _trafficLightState
+    override fun getState(): RegularTrafficLightState = trafficLightState
 
     /**
      *
@@ -31,9 +30,9 @@ class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTraf
      */
     override fun setState(state: RegularTrafficLightState)
     {
-        if(_trafficLightState != state)
+        if(trafficLightState != state)
         {
-            _trafficLightState = state
+            trafficLightState = state
             lightChanged()
         }
     }
@@ -48,7 +47,7 @@ class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTraf
      */
     override fun grantsPassage(): Boolean
     {
-        return _trafficLightState == RegularTrafficLightState.GREEN || _trafficLightState == RegularTrafficLightState.YELLOW
+        return trafficLightState == RegularTrafficLightState.GREEN || trafficLightState == RegularTrafficLightState.YELLOW
     }
 
     /**
@@ -64,7 +63,7 @@ class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTraf
      */
     override fun nextLight()
     {
-        _trafficLightState = when (_trafficLightState)
+        trafficLightState = when (trafficLightState)
         {
             RegularTrafficLightState.RED        -> RegularTrafficLightState.RED_YELLOW
             RegularTrafficLightState.RED_YELLOW -> RegularTrafficLightState.GREEN
@@ -73,7 +72,7 @@ class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTraf
             RegularTrafficLightState.BROKEN     -> RegularTrafficLightState.BROKEN
         }
         // If it's not broken, then surely the state has changed
-        if(_trafficLightState == RegularTrafficLightState.GREEN && _trafficLightState == RegularTrafficLightState.RED)
+        if(trafficLightState == RegularTrafficLightState.GREEN && trafficLightState == RegularTrafficLightState.RED)
         {
             lightChanged()
         }
@@ -84,11 +83,11 @@ class RegularTrafficLight(override val turnTypes: List<TurnType>) : AbstractTraf
         if (this === other) return true
         if (other !is RegularTrafficLight) return false
 
-        return turnTypes == other.turnTypes && _trafficLightState == other._trafficLightState
+        return turnTypes == other.turnTypes && trafficLightState == other.trafficLightState
     }
 
     override fun hashCode(): Int
     {
-        return 31 * turnTypes.hashCode() + _trafficLightState.hashCode()
+        return 31 * turnTypes.hashCode() + trafficLightState.hashCode()
     }
 }
