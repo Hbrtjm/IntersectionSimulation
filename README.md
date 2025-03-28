@@ -1,26 +1,32 @@
 # IntersectionSimulation
-A recruitment project
 
-# Basic requirements:
-  - A realistic crossing simulation, 4-way road
-  - The lights have to intelligently adapt to the traffic
-  - The app takes commands in JSON
-  - Returns a JSON representation of the simulation steps 
+## Overview
 
-# Technologies
+This project simulates an intelligent traffic light system at a 4-way intersection. The goal is to design and implement a system that adjusts light cycles based on traffic intensity on each road. The system operates via commands in JSON format, where each command dictates the action of vehicles at the intersection. This is a recruitment project.
 
-## Backend
+---
 
-Uses Kotlin 
+## Technologies Used
 
-## Frontend
+### Backend
+- **Kotlin** with **Ktor** for the backend simulation logic.
+- **Docker**: Created a docker image for the application.
 
-I will use React, maybe React Native for mobile capabilities.
+### Frontend
+- **React** (set up with Vite) for the frontend interface. It allows basic visualization of the simulation, though not fully operational yet.
+- **Docker**: Created a docker image for the application.
 
-## Deployment
+### Testing
+- **Backend Testing**: Was done using **JUnit**
 
-In my opinion Dockerization of each service will be a good idea
+---
 
-## Testing
+## Usage
 
-Backend testing depends on the way I will choose to write it with. I can use Junit or Kotest if my main framework will be Kotlin. If however I pick C, then I will have to write a separate programme that will test given cases. 
+### Backend
+To run the backend server run Application.kt.
+
+### FileExecutor
+To run the simulation from a *.json file, you can execute the program using the `FileExecutor.kt` file. The application requires an input file and optionally an output file as arguments, as shown below:
+   ```bash
+   java -jar FileExecutor.jar inputFile [outputFile]
